@@ -1,12 +1,18 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use std::process::Command;
 
 #[get("/")]
 async fn hello() -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
 }
 
-#[post("/echo")]
+#[post("/backup")]
 async fn echo(req_body: String) -> impl Responder {
+    Command::new("ls")
+        .arg("-l")
+        .arg("-a")
+        .spawn()
+        .expect("ls command failed to start");
     HttpResponse::Ok().body(req_body)
 }
 
